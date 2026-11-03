@@ -1,0 +1,20 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Node (film projects made with the skill)
+node_modules/
+package-lock.json
+
+# Render output and working assets
+out/
+assets/
+*.mp4
+*.webm
+!docs/demos/*.mp4

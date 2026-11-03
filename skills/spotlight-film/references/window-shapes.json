@@ -1,0 +1,674 @@
+{
+ "source": "Keynote-style 14-inch laptop reference, traced at 960 px, approxPolyDP epsilon 3.5% of the perimeter",
+ "coords": "bbox = [x, y, w, h] as a share of the frame; local_poly = vertices as a share of the bbox (pass to win() as poly)",
+ "shapes": [
+  {
+   "name": "wide-tapered-quad",
+   "ref_time": 8.0,
+   "use": "single subject, nearly full frame; sides converge toward the bottom",
+   "bbox": [
+    0.1,
+    0.009,
+    0.824,
+    0.991
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.08
+    ],
+    [
+     0.143,
+     0.998
+    ],
+    [
+     0.827,
+     0.998
+    ],
+    [
+     0.999,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "upper-right-wedge",
+   "ref_time": 9.0,
+   "use": "small subject entering from the top-right corner; long diagonal lower edge",
+   "bbox": [
+    0.464,
+    0.0,
+    0.536,
+    0.6
+   ],
+   "local_poly": [
+    [
+     0.998,
+     0.0
+    ],
+    [
+     0.408,
+     0.0
+    ],
+    [
+     0.0,
+     0.997
+    ],
+    [
+     0.998,
+     0.747
+    ]
+   ]
+  },
+  {
+   "name": "pentagon-tilted",
+   "ref_time": 10.5,
+   "use": "person at a desk; a cut corner at lower-left lets the laptop break out The trace includes the subject breaking out, so part of the outline is the subject, not the window.",
+   "bbox": [
+    0.201,
+    0.0,
+    0.799,
+    0.902
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.485
+    ],
+    [
+     0.259,
+     0.998
+    ],
+    [
+     0.999,
+     0.71
+    ],
+    [
+     0.999,
+     0.0
+    ],
+    [
+     0.304,
+     0.0
+    ]
+   ],
+   "includes_breakout": true
+  },
+  {
+   "name": "arrow-notch-hexagon",
+   "ref_time": 12.5,
+   "use": "wide landscape scene with a chevron notch cut into the left edge",
+   "bbox": [
+    0.0,
+    0.0,
+    0.905,
+    0.783
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.288
+    ],
+    [
+     0.117,
+     0.326
+    ],
+    [
+     0.0,
+     0.638
+    ],
+    [
+     0.722,
+     0.998
+    ],
+    [
+     0.999,
+     0.785
+    ],
+    [
+     0.596,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "v-funnel",
+   "ref_time": 18.5,
+   "use": "V/funnel window from the top edge (window only; the traced product was removed). Put the product under the point, about 0.42 of the window width, overlapping the lower edge so it breaks out.",
+   "bbox": [
+    0.165,
+    0.0,
+    0.674,
+    0.388
+   ],
+   "local_poly": [
+    [
+     0,
+     0
+    ],
+    [
+     0.283,
+     1
+    ],
+    [
+     0.714,
+     0.99
+    ],
+    [
+     1,
+     0.086
+    ],
+    [
+     1,
+     0
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-trapezoid-a",
+   "ref_time": 22.5,
+   "use": "overhead desk shot, trapezoid narrowing upward",
+   "bbox": [
+    0.016,
+    0.424,
+    0.412,
+    0.517
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.821
+    ],
+    [
+     0.997,
+     0.996
+    ],
+    [
+     0.616,
+     0.0
+    ],
+    [
+     0.321,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-notched-hex",
+   "ref_time": 22.5,
+   "use": "overhead shot, hexagon with a V notch in its top edge",
+   "bbox": [
+    0.266,
+    0.0,
+    0.428,
+    0.57
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.13
+    ],
+    [
+     0.35,
+     0.997
+    ],
+    [
+     0.633,
+     0.997
+    ],
+    [
+     0.998,
+     0.117
+    ],
+    [
+     0.667,
+     0.026
+    ],
+    [
+     0.506,
+     0.341
+    ],
+    [
+     0.465,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-pentagon-down",
+   "ref_time": 23.5,
+   "use": "pentagon pointing down, lower centre of the mosaic",
+   "bbox": [
+    0.254,
+    0.419,
+    0.435,
+    0.581
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.997
+    ],
+    [
+     0.397,
+     0.822
+    ],
+    [
+     0.998,
+     0.997
+    ],
+    [
+     0.605,
+     0.0
+    ],
+    [
+     0.313,
+     0.003
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-trapezoid-b",
+   "ref_time": 23.5,
+   "use": "inverted trapezoid, top right of the mosaic",
+   "bbox": [
+    0.523,
+    0.0,
+    0.408,
+    0.569
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.393,
+     0.993
+    ],
+    [
+     0.735,
+     0.997
+    ],
+    [
+     0.997,
+     0.208
+    ],
+    [
+     0.791,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-hex-left",
+   "ref_time": 23.5,
+   "use": "hexagon touching the left frame edge",
+   "bbox": [
+    0.0,
+    0.0,
+    0.384,
+    0.574
+   ],
+   "local_poly": [
+    [
+     0.997,
+     0.0
+    ],
+    [
+     0.485,
+     0.29
+    ],
+    [
+     0.314,
+     0.0
+    ],
+    [
+     0.0,
+     0.358
+    ],
+    [
+     0.271,
+     0.997
+    ],
+    [
+     0.602,
+     0.994
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-notched-left",
+   "ref_time": 24.0,
+   "use": "hexagon with a notch in its left side",
+   "bbox": [
+    0.016,
+    0.396,
+    0.456,
+    0.604
+   ],
+   "local_poly": [
+    [
+     0.256,
+     0.0
+    ],
+    [
+     0.0,
+     0.613
+    ],
+    [
+     0.142,
+     0.485
+    ],
+    [
+     0.167,
+     0.88
+    ],
+    [
+     0.998,
+     0.997
+    ],
+    [
+     0.591,
+     0.003
+    ]
+   ]
+  },
+  {
+   "name": "mosaic-inverted-trap",
+   "ref_time": 24.0,
+   "use": "inverted trapezoid, wide top edge",
+   "bbox": [
+    0.376,
+    0.0,
+    0.435,
+    0.563
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.321,
+     0.987
+    ],
+    [
+     0.739,
+     0.997
+    ],
+    [
+     0.998,
+     0.191
+    ]
+   ]
+  },
+  {
+   "name": "corner-notch-right",
+   "ref_time": 25.0,
+   "use": "top-right block with a chevron notch in its right edge",
+   "bbox": [
+    0.498,
+    0.0,
+    0.502,
+    0.506
+   ],
+   "local_poly": [
+    [
+     0.004,
+     0.0
+    ],
+    [
+     0.0,
+     0.996
+    ],
+    [
+     0.884,
+     0.971
+    ],
+    [
+     0.969,
+     0.586
+    ],
+    [
+     0.774,
+     0.308
+    ],
+    [
+     0.998,
+     0.0
+    ]
+   ]
+  },
+  {
+   "name": "battery-wedge",
+   "ref_time": 26.5,
+   "use": "lower-right wedge; claim type rides its long upper-left edge",
+   "bbox": [
+    0.499,
+    0.496,
+    0.501,
+    0.504
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.553,
+     0.996
+    ],
+    [
+     0.998,
+     0.919
+    ],
+    [
+     0.869,
+     0.71
+    ],
+    [
+     0.998,
+     0.007
+    ]
+   ]
+  },
+  {
+   "name": "small-tilted-pentagon",
+   "ref_time": 30.5,
+   "use": "small, tilted, mid-frame; used for quiet resets",
+   "bbox": [
+    0.471,
+    0.074,
+    0.368,
+    0.467
+   ],
+   "local_poly": [
+    [
+     0.997,
+     0.417
+    ],
+    [
+     0.873,
+     0.563
+    ],
+    [
+     0.734,
+     0.048
+    ],
+    [
+     0.45,
+     0.0
+    ],
+    [
+     0.0,
+     0.996
+    ],
+    [
+     0.983,
+     0.683
+    ]
+   ]
+  },
+  {
+   "name": "funnel-product",
+   "ref_time": 33.5,
+   "use": "inverted trapezoid over the product; the product breaks out of the lower edge The trace includes the subject breaking out, so part of the outline is the subject, not the window.",
+   "bbox": [
+    0.202,
+    0.0,
+    0.473,
+    0.62
+   ],
+   "local_poly": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.403,
+     0.997
+    ],
+    [
+     0.813,
+     0.958
+    ],
+    [
+     0.998,
+     0.0
+    ]
+   ],
+   "includes_breakout": true
+  }
+ ],
+ "mosaic_layout": {
+  "ref_time": 23.5,
+  "note": "four windows with wide uneven gutters (2-11% of width); two touch the frame edge",
+  "windows": [
+   {
+    "bbox": [
+     0.0,
+     0.594,
+     0.091,
+     0.285
+    ],
+    "local_poly": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      0.0,
+      0.247
+     ],
+     [
+      0.23,
+      0.273
+     ],
+     [
+      0.0,
+      0.656
+     ],
+     [
+      0.989,
+      0.994
+     ]
+    ]
+   },
+   {
+    "bbox": [
+     0.254,
+     0.419,
+     0.435,
+     0.581
+    ],
+    "local_poly": [
+     [
+      0.0,
+      0.997
+     ],
+     [
+      0.397,
+      0.822
+     ],
+     [
+      0.998,
+      0.997
+     ],
+     [
+      0.605,
+      0.0
+     ],
+     [
+      0.313,
+      0.003
+     ]
+    ]
+   },
+   {
+    "bbox": [
+     0.523,
+     0.0,
+     0.408,
+     0.569
+    ],
+    "local_poly": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      0.393,
+      0.993
+     ],
+     [
+      0.735,
+      0.997
+     ],
+     [
+      0.997,
+      0.208
+     ],
+     [
+      0.791,
+      0.0
+     ]
+    ]
+   },
+   {
+    "bbox": [
+     0.0,
+     0.0,
+     0.384,
+     0.574
+    ],
+    "local_poly": [
+     [
+      0.997,
+      0.0
+     ],
+     [
+      0.485,
+      0.29
+     ],
+     [
+      0.314,
+      0.0
+     ],
+     [
+      0.0,
+      0.358
+     ],
+     [
+      0.271,
+      0.997
+     ],
+     [
+      0.602,
+      0.994
+     ]
+    ]
+   }
+  ]
+ }
+}
