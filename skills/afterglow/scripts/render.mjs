@@ -98,7 +98,7 @@ if (args.timeline && !args.out && !args.stills) {
   // If ffmpeg dies (bad args, disk full), stop feeding it and fail instead of reporting an incomplete video.
   let ffExit = null;
   const ffDone = new Promise((r) => { ff.on('close', (c, sig) => r(ffExit = [c, sig])); ff.on('error', (e) => r(ffExit = [e.message, null])); });
-  let stdinErr = null; ff.stdin.on('error', (e) => { stdinErr = e; }); // e.g. EPIPE after an early exit
+  let stdinErr = null; const stdinFailed = new Promise((r) => ff.stdin.on('error', (e) => r(stdinErr = e))); // e.g. EPIPE
   const started = Date.now();
   for (let f = f0; f < f1 && !ffExit && !stdinErr; f++) {
     const anchor = f / fps;
@@ -107,7 +107,7 @@ if (args.timeline && !args.out && !args.stills) {
       const t = blur > 1 ? anchor + ((k + 0.5) / blur - 0.5) * (0.5 / fps) : anchor;
       const png = await shoot(t, anchor);
       if (ffExit || stdinErr) break;
-      if (!ff.stdin.write(png)) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), ffDone]);
+      if (!ff.stdin.write(png)) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), ffDone, stdinFailed]);
     }
     if ((f - f0) % 24 === 0) process.stdout.write(`frame ${f}/${f1} (${((Date.now() - started) / 1000).toFixed(0)}s)\n`);
   }
