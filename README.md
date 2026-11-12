@@ -52,7 +52,7 @@ spotlight-film, it also writes its own original sound track and normalises loudn
 
 | FlightShot, with a knob chapter (24 s) | Tally starter, monitor (19 s) |
 | --- | --- |
-| <a href="docs/demos/afterglow-flightshot.mp4"><img src="docs/demos/afterglow-flightshot.gif" width="420" alt="FlightShot afterglow film"></a> | <a href="docs/demos/afterglow-tally.mp4"><img src="docs/demos/afterglow-tally.gif" width="420" alt="Tally afterglow film"></a> |
+| [![FlightShot afterglow film](docs/demos/afterglow-flightshot.gif)](docs/demos/afterglow-flightshot.mp4) | [![Tally afterglow film](docs/demos/afterglow-tally.gif)](docs/demos/afterglow-tally.mp4) |
 
 Both demos use a light, cool custom look (pale ice-blue stage, deep blue ink) added through `reel({ looks })`.
 
