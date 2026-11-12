@@ -41,7 +41,8 @@ self-contained: everything it needs is in `scripts/`.
    (two-pass loudness to about −16 LUFS).
 7. **Review**: `bash afterglow/review.sh out/film.mp4` (contact sheet, one frame per chapter, loudness). Look at
    both images. Run the gates in §6. Fix and re-render.
-8. **Posters**: `node afterglow/poster.mjs --root . --page film/film.html --outdir out/posters --jobs "hero:amber,square:amber,story:amber,triptych:amber"`.
+8. **Posters**: `node afterglow/poster.mjs --root . --page film/film.html --outdir out/posters --jobs "hero:<look>,square:<look>,story:<look>,triptych:<look>"`
+   with the film's look (for example `green` for the starter template).
 9. **Deliver** the MP4, the posters, the contact sheet and PLAN.md. Say what is authored (redrawn UI, sound) and
    what is real (screenshots), and any gap.
 
@@ -121,6 +122,7 @@ Draw with `txt()` (it tracks small screen text for the checks). Never use `Date`
 <project>/assets/      ← screenshots (for the flightshot template: copy templates/flightshot/assets/ here)
 <project>/node_modules ← npm i @fontsource/inter @fontsource/jetbrains-mono (+ @fontsource/noto-sans-tc for CJK)
 ```
+`sound.py` needs NumPy in the Python that runs it (`python3 -m pip install numpy`).
 Playwright and ffmpeg must be available (`require('playwright')`). Fonts are served from `node_modules` by the
 render server, so `film.html` links `/node_modules/@fontsource/...`. Every font weight the film draws must be in
 `loadFonts()`, or Chromium silently falls back to a serif.

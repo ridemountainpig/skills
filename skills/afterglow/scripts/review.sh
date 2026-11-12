@@ -7,9 +7,10 @@ ffprobe -v error -show_entries format=duration:stream=width,height,r_frame_rate 
 ROWS=$(python3 -c "import math;print(math.ceil(float($(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F"))/4))")
 ffmpeg -v error -y -i "$F" -vf "fps=1,scale=480:-1,tile=4x$ROWS" -frames:v 1 "$B-contact.jpg" && echo "[review] contact sheet -> $B-contact.jpg"
 if [ -f out/timeline.json ]; then
+  TMP=$(mktemp -d); trap 'rm -rf -- "$TMP"' EXIT
   TS=$(python3 -c "import json;d=json.load(open('out/timeline.json'));print(' '.join(str(round((c['t0']+c['t1'])/2,2)) for c in d['chapters']))")
-  i=0; for t in $TS; do ffmpeg -v error -y -ss $t -i "$F" -frames:v 1 -vf scale=960:-1 /tmp/ag_ch$i.png; i=$((i+1)); done
-  ffmpeg -v error -y $(for j in $(seq 0 $((i-1))); do echo -i /tmp/ag_ch$j.png; done) -filter_complex "$(for j in $(seq 0 $((i-1))); do printf "[$j]"; done)vstack=$i" "$B-chapters.jpg" && echo "[review] chapter frames -> $B-chapters.jpg"
+  i=0; for t in $TS; do ffmpeg -v error -y -ss $t -i "$F" -frames:v 1 -vf scale=960:-1 "$TMP"/ch$i.png; i=$((i+1)); done
+  ffmpeg -v error -y $(for j in $(seq 0 $((i-1))); do echo -i "$TMP"/ch$j.png; done) -filter_complex "$(for j in $(seq 0 $((i-1))); do printf "[$j]"; done)vstack=$i" "$B-chapters.jpg" && echo "[review] chapter frames -> $B-chapters.jpg"
   python3 -c "import json;r=json.load(open('out/timeline.json')).get('review',[]);print('\n'.join('[review] '+x for x in r) or '[review] page checks OK')"
 fi
 L=$(ffmpeg -hide_banner -i "$F" -af loudnorm=print_format=summary -f null - 2>&1)

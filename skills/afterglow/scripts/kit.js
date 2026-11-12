@@ -21,7 +21,7 @@ export const PALETTES = {
   paper: { light: true, stage: '#e8e4da', head: '#1d1c1a', mark: '#c2401f', glass: '#f4f1e9', phos: '#1f1d1a', dim: '#857f73', hot: '#cf4a2b', ok: '#2f8a52', line: '#aaa294',
     fx: { glow: 0, scan: 0.035, roll: 0, flick: 0, curve: 18 } },
 };
-export const hex = (h) => { const n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+export const hex = (h) => { let d = h.replace('#', ''); if (d.length === 3) d = d.replace(/./g, '$&$&'); if (!/^[0-9a-f]{6}$/i.test(d)) throw new Error(`bad colour ${h}: use #rgb or #rrggbb`); const n = parseInt(d, 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
 const toHex = (c) => '#' + c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
 export const mixHex = (a, b, k) => toHex(hex(a).map((v, i) => v + (hex(b)[i] - v) * k));
 export function mixPal(a, b, k) {

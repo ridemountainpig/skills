@@ -21,4 +21,4 @@ done
 [ $FAIL = 0 ] || { echo "[render] FIX parallel render failed, segments kept in $SEG"; exit 1; }
 grep -h "\[review\]\|error" $SEG/log0.txt | sort -u || true
 for i in $(seq 0 $((N-1))); do echo "file 's$i.mp4'"; done > $SEG/list.txt
-ffmpeg -v error -y -f concat -safe 0 -i $SEG/list.txt -c copy $OUT && rm -rf $SEG && echo "joined -> $OUT"
+ffmpeg -v error -y -f concat -safe 0 -i $SEG/list.txt -c copy "$OUT" && rm -rf -- "${SEG:?}" && echo "joined -> $OUT"

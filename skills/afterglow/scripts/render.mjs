@@ -51,7 +51,8 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const port = server.address().port;
 
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-const page = await browser.newPage({ viewport: { width: Math.round(1920 * scale), height: Math.round(1080 * scale) } });
+// The stage is always 1920x1080 CSS px; --scale shrinks the output through the device scale factor.
+const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: scale });
 page.on('console', (m) => { if (m.type() === 'error' || m.text().startsWith('[review]')) console.error('[page]', m.text()); });
 page.on('pageerror', (e) => console.error('[page error]', e.message));
 await page.goto(`http://127.0.0.1:${port}/${args.page}?scale=${scale}${args.query ? `&${args.query}` : ''}`);
@@ -94,19 +95,25 @@ if (args.timeline && !args.out && !args.stills) {
     '-c:v', 'libx264', '-preset', scale < 1 ? 'veryfast' : 'slow', '-crf', scale < 1 ? '23' : '16',
     ...(args.audio ? ['-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
     '-movflags', '+faststart', args.out], { stdio: ['pipe', 'inherit', 'inherit'] });
+  // If ffmpeg dies (bad args, disk full), stop feeding it and fail instead of reporting an incomplete video.
+  let ffExit = null;
+  const ffDone = new Promise((r) => { ff.on('close', (c, sig) => r(ffExit = [c, sig])); ff.on('error', (e) => r(ffExit = [e.message, null])); });
+  ff.stdin.on('error', () => {}); // EPIPE after an early exit; the exit code is reported below
   const started = Date.now();
-  for (let f = f0; f < f1; f++) {
+  for (let f = f0; f < f1 && !ffExit; f++) {
     const anchor = f / fps;
     for (let k = 0; k < blur; k++) {
       // 180° shutter centred on the frame time.
       const t = blur > 1 ? anchor + ((k + 0.5) / blur - 0.5) * (0.5 / fps) : anchor;
       const png = await shoot(t, anchor);
-      if (!ff.stdin.write(png)) await new Promise((r) => ff.stdin.once('drain', r));
+      if (ffExit) break;
+      if (!ff.stdin.write(png)) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), ffDone]);
     }
     if ((f - f0) % 24 === 0) process.stdout.write(`frame ${f}/${f1} (${((Date.now() - started) / 1000).toFixed(0)}s)\n`);
   }
   ff.stdin.end();
-  await new Promise((r) => ff.on('close', r));
+  const [code, signal] = await ffDone;
+  if (code !== 0) { console.error(`ffmpeg failed (code ${code}, signal ${signal}); ${args.out} is incomplete`); await browser.close(); server.close(); process.exit(1); }
   console.log('video ->', args.out);
 }
 await browser.close();

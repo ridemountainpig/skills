@@ -11,7 +11,7 @@ const head = (s, x, title, sub) => {
   if (sub) txt(s, sub, PAD, 140, { font: '500 20px Inter', color: x.pal.dim });
   s.fillStyle = rgba(x.pal.dim, 0.45); s.fillRect(PAD, 162, 920 - PAD * 2, 1);
 };
-const ROWS = [['09:12', 'coffee', '4.20'], ['12:40', 'lunch', '12.50'], ['18:05', 'train', '2.80']];
+const ROWS = [['09:12', 'coffee', '4.20'], ['11:05', 'train', '2.80'], ['12:40', 'lunch', '12.50']]; // the last row is the one added on screen
 
 const chapters = [
   { id: 'log', dur: 5.2, caption: [['One line. '], ['Logged.', 'mark']], badge: { at: 3.2, text: '+1 entry' },
@@ -24,7 +24,7 @@ const chapters = [
         const a = i === 2 ? x.p(2.6, 2.9) : 1, y = 270 + i * 44;
         txt(s, tm, PAD, y, { font: mono(22), color: x.pal.dim, alpha: a });
         txt(s, what, PAD + 120, y, { font: mono(22), color: x.pal.phos, alpha: a });
-        txt(s, amt, w - PAD, y, { font: mono(22, 600), color: i === 1 && x.lt > 2.6 ? x.pal.mark || x.pal.phos : x.pal.phos, alpha: a, align: 'right' });
+        txt(s, amt, w - PAD, y, { font: mono(22, 600), color: i === 2 && x.lt > 2.6 ? x.pal.mark || x.pal.phos : x.pal.phos, alpha: a, align: 'right' });
       });
       if (x.lt > 3.0) txt(s, '✓ saved · today 19.50', PAD, 460, { font: mono(22, 600), color: x.pal.ok, alpha: x.p(3.0, 3.2) });
     } },

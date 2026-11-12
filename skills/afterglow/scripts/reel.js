@@ -37,6 +37,7 @@ export async function reel(cfg) {
   const kc = CH.find((c) => c.knob); const KNOB_T = kc ? kc.knob.map((x) => kc.t0 + x) : [];
   const stopsFor = (base) => [base, ...(cfg.knobStops || ['amber', 'green', 'white', 'cyan']).filter((p) => p !== base)].slice(0, KNOB_T.length + 1);
   const KNOB = stopsFor(BASE);
+  if (kc && KNOB.length < KNOB_T.length + 1) throw new Error(`knobStops: ${KNOB_T.length} knob clicks need ${KNOB_T.length + 1} looks (the base look first), got ${KNOB.length}`);
   // a step between a dark and a light look crosses the whole stage: no colour mix (that reads as mud). The screen
   // switches off to a line, the stage swaps while it is dark, the screen comes back with a degauss wobble.
   const stepDur = (a, b) => (Math.abs(hexLum(looks[a].stage) - hexLum(looks[b].stage)) > 0.3 ? 0.75 : 0.22);
@@ -54,10 +55,12 @@ export async function reel(cfg) {
   const target = (g) => (Array.isArray(g) ? g : g === 'POWER' ? [1415, DEV.strip.y + 9] : g === 'COLOR' ? [1290, DEV.strip.y + 9] : keyCenter(g));
 
   // ---------- one frame on a 1920x1080 stage ----------
-  function frame(ctx, t, base = BASE, lock = false) {
+  // frame() draws in 1920x1080 stage units on top of the caller's transform (renderFrame sets the output scale).
+  function frame(ctx, t, base = BASE, lock = false) { ctx.save(); try { frame0(ctx, t, base, lock); } finally { ctx.restore(); } }
+  function frame0(ctx, t, base, lock) {
     const ci = chAt(Math.min(t, DUR - 1e-3)), C = CH[ci], lt = t - C.t0;
     const { pal, wob, idx, blank } = lookAt(t, base, lock);
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = pal.stage; ctx.fillRect(0, 0, 1920, 1080);
+    ctx.fillStyle = pal.stage; ctx.fillRect(0, 0, 1920, 1080);
     if (C.end) return endCard(ctx, lt, pal, C.end);
     const cam = C.camera && !lock ? (() => { const k = ease(prog(lt, 0, C.dur)); return [lerp(C.camera.from[0], C.camera.to[0], k), lerp(C.camera.from[1], C.camera.to[1], k)]; })() : (C.camera && lock ? C.camera.from : [1, 0]);
     const dev = DEVICE === 'monitor' ? [1.06, 10] : [1, 0]; // monitor: no keyboard, a bigger screen
@@ -81,12 +84,12 @@ export async function reel(cfg) {
     if (blank > 0) powerOn(ctx, pal, R, 1 - blank); // the collapse line while the look swaps
     if (powerT >= 0) powerOn(ctx, pal, R, prog(t, powerT + 0.05, powerT + 0.55));
     if (wob) { ctx.save(); rr(ctx, R.x, R.y, R.w, R.h, pal.fx.curve); ctx.clip(); ctx.fillStyle = rgba(pal.phos, 0.25 * wob); ctx.fillRect(R.x, R.y, R.w, R.h); ctx.restore(); }
-    if (C.cursor && !lock) { const path = C.cursor.map(([a, g, d]) => [a, ...target(g), d || 0]); const cp = cursorAt(path, lt); cursor(ctx, cp[1] + 3, cp[2] + 3, cp[3]); }
+    if (C.cursor && C.cursor.length && !lock) { const path = C.cursor.map(([a, g, d]) => [a, ...target(g), d || 0]); const cp = cursorAt(path, lt); cursor(ctx, cp[1] + 3, cp[2] + 3, cp[3]); }
     ctx.restore();
     // caption band (so the camera can move under it), caption, badge, chapter chrome
     const g = ctx.createLinearGradient(0, 0, 0, 150); g.addColorStop(0, pal.stage); g.addColorStop(0.75, pal.stage); g.addColorStop(1, rgba(pal.stage, 0));
     ctx.fillStyle = g; ctx.fillRect(0, 0, 1920, 150);
-    const segs = typeof C.caption === 'function' ? C.caption({ knob: KNOB.map((n) => [n, looks[n]]), pal }) : C.caption;
+    const segs = typeof C.caption === 'function' ? C.caption({ knob: KNOB.map((n) => [n, looks[n]]), pal }) : C.caption || [];
     caption(ctx, pal, segs, { alpha: prog(lt, 0, 0.18), badge: C.badge && lt >= C.badge.at ? C.badge.text : null });
     chrome(ctx, pal, cfg.footer || '', ci + 1, N);
   }
@@ -183,7 +186,7 @@ export async function reel(cfg) {
   for (const c of CH) {
     if (c.id !== CH[0].id) events.push({ t: c.t0, type: c.end ? 'end' : 'cut', dur: c.end ? c.dur : undefined });
     if (c.power != null) events.push({ t: c.t0 + c.power - 0.05, type: 'click' }, { t: c.t0 + c.power + 0.05, type: 'poweron' });
-    for (const ty of c.typing || []) for (let i = 0; i < ty.text.length; i++) if (ty.text[i] !== ' ') events.push({ t: c.t0 + ty.at + i / (ty.cps || 12), type: 'key' });
+    for (const ty of c.typing || []) for (let i = 0; i < ty.text.length; i++) if (ty.text[i] !== ' ') events.push({ t: c.t0 + ty.at + (i + 1) / (ty.cps || 12), type: 'key' });
     for (const p of c.press || []) events.push({ t: c.t0 + p.at, type: 'enter' });
     for (const k of c.knob || []) events.push({ t: c.t0 + k, type: 'knob' });
     for (const e of c.events || []) events.push({ ...e, t: c.t0 + e.at });
