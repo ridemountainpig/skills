@@ -50,9 +50,11 @@ COLOR knob, with one captioned verb per chapter. Comes in several looks (amber, 
 or one tinted from your brand colour) and renders a 16:9 film plus hero, square, story and triptych posters. Unlike
 spotlight-film, it also writes its own original sound track and normalises loudness.
 
-| FlightShot, amber with a knob chapter (24 s) | Tally starter, green monitor (19 s) |
+| FlightShot, with a knob chapter (24 s) | Tally starter, monitor (19 s) |
 | --- | --- |
-| [![FlightShot afterglow film](docs/demos/afterglow-flightshot-amber.gif)](docs/demos/afterglow-flightshot-amber.mp4) | [![Tally afterglow film](docs/demos/afterglow-tally-green.gif)](docs/demos/afterglow-tally-green.mp4) |
+| <a href="docs/demos/afterglow-flightshot.mp4"><img src="docs/demos/afterglow-flightshot.gif" width="420" alt="FlightShot afterglow film"></a> | <a href="docs/demos/afterglow-tally.mp4"><img src="docs/demos/afterglow-tally.gif" width="420" alt="Tally afterglow film"></a> |
+
+Both demos use a light, cool custom look (pale ice-blue stage, deep blue ink) added through `reel({ looks })`.
 
 Tally is a fictional product used by the starter template.
 
