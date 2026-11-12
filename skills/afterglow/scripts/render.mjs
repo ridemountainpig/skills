@@ -98,22 +98,22 @@ if (args.timeline && !args.out && !args.stills) {
   // If ffmpeg dies (bad args, disk full), stop feeding it and fail instead of reporting an incomplete video.
   let ffExit = null;
   const ffDone = new Promise((r) => { ff.on('close', (c, sig) => r(ffExit = [c, sig])); ff.on('error', (e) => r(ffExit = [e.message, null])); });
-  ff.stdin.on('error', () => {}); // EPIPE after an early exit; the exit code is reported below
+  let stdinErr = null; ff.stdin.on('error', (e) => { stdinErr = e; }); // e.g. EPIPE after an early exit
   const started = Date.now();
-  for (let f = f0; f < f1 && !ffExit; f++) {
+  for (let f = f0; f < f1 && !ffExit && !stdinErr; f++) {
     const anchor = f / fps;
     for (let k = 0; k < blur; k++) {
       // 180° shutter centred on the frame time.
       const t = blur > 1 ? anchor + ((k + 0.5) / blur - 0.5) * (0.5 / fps) : anchor;
       const png = await shoot(t, anchor);
-      if (ffExit) break;
+      if (ffExit || stdinErr) break;
       if (!ff.stdin.write(png)) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), ffDone]);
     }
     if ((f - f0) % 24 === 0) process.stdout.write(`frame ${f}/${f1} (${((Date.now() - started) / 1000).toFixed(0)}s)\n`);
   }
   ff.stdin.end();
   const [code, signal] = await ffDone;
-  if (code !== 0) { console.error(`ffmpeg failed (code ${code}, signal ${signal}); ${args.out} is incomplete`); await browser.close(); server.close(); process.exit(1); }
+  if (code !== 0 || stdinErr) { console.error(`ffmpeg failed (code ${code}, signal ${signal}${stdinErr ? `, stdin: ${stdinErr.message}` : ''}); ${args.out} is incomplete`); await browser.close(); server.close(); process.exit(1); }
   console.log('video ->', args.out);
 }
 await browser.close();
