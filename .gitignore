@@ -18,3 +18,5 @@ assets/
 *.mp4
 *.webm
 !docs/demos/*.mp4
+# ...but keep example assets that ship inside a skill's templates
+!skills/*/templates/*/assets/
